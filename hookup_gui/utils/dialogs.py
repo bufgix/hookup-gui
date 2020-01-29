@@ -75,7 +75,7 @@ class InputDialog(QDialog):
         line_edit.textChanged.connect(lambda msg: self.handle(msg))
 
         btn = QPushButton("OK")
-        btn.clicked.connect(self.btn_exec)
+        btn.clicked.connect(self.close)
 
         layout.addWidget(label)
         layout.addWidget(line_edit)
@@ -86,9 +86,6 @@ class InputDialog(QDialog):
 
     def handle(self, val):
         self.data = val
-
-    def btn_exec(self):
-        self.close()
 
     def get_data(self):
         return self.data

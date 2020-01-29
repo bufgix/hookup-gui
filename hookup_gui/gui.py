@@ -1,8 +1,10 @@
 from PySide2.QtWidgets import (QApplication, QMainWindow,
                                QListWidgetItem)
 from PySide2.QtGui import QFont, QIcon
+from hookup_gui.utils import (
+    ApiMap, ASSETS_PATH, ConfirmDialog, NotifyDialog, InputDialog
+)
 from hookup_gui.ui.view import Ui_MainWindow
-from hookup_gui.utils import ApiMap, ASSETS_PATH, ConfirmDialog, NotifyDialog, InputDialog
 import requests
 import sys
 import json
@@ -89,8 +91,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 def run_gui():
     app = QApplication([])
     server_ip = InputDialog(
-        "SERVER IP", "Please type server ip adress", default="http://localhost:5000")\
-        .get_data()
+        "SERVER IP", "Please type yout server IP",
+        default="http://localhost:5000").get_data()
     win = MainWindow(ApiMap(server_ip))
     win.show()
     sys.exit(app.exec_())
