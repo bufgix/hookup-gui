@@ -2,7 +2,7 @@ from PySide2.QtWidgets import (QApplication, QMainWindow,
                                QListWidgetItem)
 from PySide2.QtGui import QFont, QIcon
 from hookup_gui.utils import (
-    ApiMap, ASSETS_PATH, ConfirmDialog, NotifyDialog, InputDialog
+    ApiMap, ASSETS_PATH, ConfirmDialog, NotifyDialog, InputDialog, WIN_EVENT
 )
 from hookup_gui.ui.view import Ui_MainWindow
 import requests
@@ -93,6 +93,7 @@ def run_gui():
     server_ip = InputDialog(
         "SERVER IP", "Please type yout server IP",
         default="http://localhost:5000").get_data()
-    win = MainWindow(ApiMap(server_ip))
-    win.show()
-    sys.exit(app.exec_())
+    if server_ip != WIN_EVENT.CLOSE:
+        win = MainWindow(ApiMap(server_ip))
+        win.show()
+        sys.exit(app.exec_())

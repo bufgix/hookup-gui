@@ -3,6 +3,11 @@ from PySide2.QtWidgets import (
     QSizePolicy, QLineEdit
 )
 from PySide2.QtCore import Qt
+from enum import Enum
+
+
+class WIN_EVENT(Enum):
+    CLOSE = "CLOSE"
 
 
 class ConfirmDialog(QDialog):
@@ -65,6 +70,7 @@ class NotifyDialog(QDialog):
 class InputDialog(QDialog):
     def __init__(self, title: str, msg: str, default: str = ""):
         super().__init__()
+        self.interaction = False
         self.data = default
         self.setWindowTitle(title)
         layout = QVBoxLayout()
@@ -75,17 +81,27 @@ class InputDialog(QDialog):
         line_edit.textChanged.connect(lambda msg: self.handle(msg))
 
         btn = QPushButton("OK")
-        btn.clicked.connect(self.close)
+        btn.clicked.connect(self.exit_btn)
 
         layout.addWidget(label)
         layout.addWidget(line_edit)
         layout.addWidget(btn)
 
         self.setLayout(layout)
+
         self.exec_()
 
     def handle(self, val):
+        self.interaction = True
         self.data = val
+
+    def exit_btn(self):
+        self.interaction = True
+        self.close()
 
     def get_data(self):
         return self.data
+
+    def closeEvent(self, event):
+        if not self.interaction:
+            self.data = WIN_EVENT.CLOSE
