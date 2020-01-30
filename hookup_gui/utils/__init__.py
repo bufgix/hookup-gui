@@ -1,15 +1,24 @@
 from hookup_gui.utils.dialogs import *
+from dotenv import load_dotenv
+from distutils.util import strtobool
 import pathlib
 import json
+import os
 
 
 PROJECT_PATH = pathlib.Path(__file__).parent.parent
 ASSETS_PATH = PROJECT_PATH / 'assets'
-DEFAULT_CONFIG_FILE = PROJECT_PATH / 'config.json'
+CONFIG_FILE = PROJECT_PATH / 'config.json'
+DEV_CONFIG_FILE = PROJECT_PATH / 'dev_config.json'
+load_dotenv(dotenv_path=str(PROJECT_PATH / '.env'))
 
 
 class Config:
-    def __init__(self, cpath: pathlib.Path = DEFAULT_CONFIG_FILE):
+    def __init__(self, cpath: pathlib.Path = CONFIG_FILE):
+        print(os.getenv('DEBUG'))
+        if strtobool(os.getenv('DEBUG')):
+            cpath = DEV_CONFIG_FILE
+        print(cpath)
         self.cpath = cpath
         self.config_dict = dict()
         self._load()
