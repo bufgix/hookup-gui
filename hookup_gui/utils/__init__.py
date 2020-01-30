@@ -10,15 +10,16 @@ PROJECT_PATH = pathlib.Path(__file__).parent.parent
 ASSETS_PATH = PROJECT_PATH / 'assets'
 CONFIG_FILE = PROJECT_PATH / 'config.json'
 DEV_CONFIG_FILE = PROJECT_PATH / 'dev_config.json'
-load_dotenv(dotenv_path=str(PROJECT_PATH / '.env'))
+ENV_FILE = PROJECT_PATH / '.env'
+if ENV_FILE.exists():
+    load_dotenv(dotenv_path=str(ENV_FILE))
+DEBUG = os.getenv('DEBUG') or "False"
 
 
 class Config:
     def __init__(self, cpath: pathlib.Path = CONFIG_FILE):
-        print(os.getenv('DEBUG'))
-        if strtobool(os.getenv('DEBUG')):
+        if strtobool(DEBUG):
             cpath = DEV_CONFIG_FILE
-        print(cpath)
         self.cpath = cpath
         self.config_dict = dict()
         self._load()
